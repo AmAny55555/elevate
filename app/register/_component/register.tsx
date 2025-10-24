@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -8,7 +8,7 @@ import {
   RegisterSchemaType,
 } from "@/lib/schemas/register.schema";
 import { registerAction } from "../action/register";
-
+import { toast } from "sonner";
 import {
   Form,
   FormField,
@@ -18,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useMutation } from "@tanstack/react-query";
 
 import { FcGoogle } from "react-icons/fc";
 import {
@@ -29,7 +30,6 @@ import {
 } from "react-icons/fa";
 
 export default function RegisterPage() {
-  const [isPending, startTransition] = useTransition();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -45,15 +45,19 @@ export default function RegisterPage() {
     },
   });
 
+  // ✅ React Query Mutation
+  const { mutate, isPending } = useMutation({
+    mutationFn: registerAction,
+    onSuccess: () => {
+      toast.success("Account created successfully!");
+    },
+    onError: (err: any) => {
+      toast.error(err?.message || "Something went wrong");
+    },
+  });
+
   const onSubmit = (values: RegisterSchemaType) => {
-    startTransition(async () => {
-      const result = await registerAction(values);
-      if (result.success) {
-        console.log("✅ Registration successful:", result.data);
-      } else {
-        console.error("❌ Error:", result.error);
-      }
-    });
+    mutate(values);
   };
 
   return (
@@ -63,6 +67,7 @@ export default function RegisterPage() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* First Name */}
             <FormField
               control={form.control}
               name="firstName"
@@ -72,7 +77,7 @@ export default function RegisterPage() {
                     <Input
                       placeholder="First Name"
                       {...field}
-                      className="h-14 "
+                      className="h-14 rounded-lg bg-gray-100"
                     />
                   </FormControl>
                   <FormMessage />
@@ -80,6 +85,7 @@ export default function RegisterPage() {
               )}
             />
 
+            {/* Last Name */}
             <FormField
               control={form.control}
               name="lastName"
@@ -89,7 +95,7 @@ export default function RegisterPage() {
                     <Input
                       placeholder="Last Name"
                       {...field}
-                      className="h-14"
+                      className="h-14 rounded-lg bg-gray-100"
                     />
                   </FormControl>
                   <FormMessage />
@@ -97,32 +103,43 @@ export default function RegisterPage() {
               )}
             />
 
+            {/* Username */}
             <FormField
               control={form.control}
               name="username"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Username" {...field} className="h-14" />
+                    <Input
+                      placeholder="Username"
+                      {...field}
+                      className="h-14 rounded-lg bg-gray-100"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
+            {/* Email */}
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input placeholder="Email" {...field} className="h-14" />
+                    <Input
+                      placeholder="Email"
+                      {...field}
+                      className="h-14 rounded-lg bg-gray-100"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
 
+            {/* Password */}
             <FormField
               control={form.control}
               name="password"
@@ -134,7 +151,7 @@ export default function RegisterPage() {
                         type={showPassword ? "text" : "password"}
                         placeholder="Password"
                         {...field}
-                        className="h-14"
+                        className="h-14 rounded-lg bg-gray-100"
                       />
                       <button
                         type="button"
@@ -150,6 +167,7 @@ export default function RegisterPage() {
               )}
             />
 
+            {/* Confirm Password */}
             <FormField
               control={form.control}
               name="confirmPassword"
@@ -161,7 +179,7 @@ export default function RegisterPage() {
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm Password"
                         {...field}
-                        className="h-14"
+                        className="h-14 rounded-lg bg-gray-100"
                       />
                       <button
                         type="button"
@@ -177,10 +195,11 @@ export default function RegisterPage() {
               )}
             />
 
+            {/* Submit Button */}
             <Button
               type="submit"
               disabled={isPending}
-              className="w-full bg-blue-600 text-white h-14 rounded-4xl hover:bg-blue-600" // 👈 نفس اللون في hover
+              className="w-full bg-blue-600 text-white h-14 rounded-4xl hover:bg-blue-600"
             >
               {isPending ? "Loading..." : "Create Account"}
             </Button>

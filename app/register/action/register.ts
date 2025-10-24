@@ -2,14 +2,7 @@
 
 import { JSON_HEADER } from "@/lib/constants/api.constant";
 
-export type RegisterValues = {
-  firstName: string;
-  lastName: string;
-  username: string;
-  email: string;
-  password: string;
-  confirmPassword: string;
-};
+import type { RegisterValues } from "@/app/types/register";
 
 export async function registerAction(values: RegisterValues) {
   try {
@@ -24,12 +17,10 @@ export async function registerAction(values: RegisterValues) {
     const data = await response.json();
 
     if (!response.ok) {
-      return { success: false, error: data?.message || "Something went wrong" };
+      throw new Error(data?.message || "Something went wrong");
     }
-
-    return { success: true, data };
+    return { data };
   } catch (err) {
-    console.error("❌ Error in registerAction:", err);
-    return { success: false, error: "Server error, please try again" };
+    return { err: "Server error, please try again" };
   }
 }
