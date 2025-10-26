@@ -66,6 +66,7 @@ export default function RegisterPage() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {/* First Name */}
             <FormField
               control={form.control}
               name="firstName"
@@ -75,7 +76,7 @@ export default function RegisterPage() {
                     <Input
                       placeholder="First Name"
                       {...field}
-                      className="h-14 rounded-lg bg-gray-100"
+                      className="h-14 rounded-lg bg-[#f9f9f9]"
                     />
                   </FormControl>
                   <FormMessage />
@@ -93,7 +94,7 @@ export default function RegisterPage() {
                     <Input
                       placeholder="Last Name"
                       {...field}
-                      className="h-14 rounded-lg bg-gray-100"
+                      className="h-14 rounded-lg bg-[#f9f9f9]"
                     />
                   </FormControl>
                   <FormMessage />
@@ -101,6 +102,7 @@ export default function RegisterPage() {
               )}
             />
 
+            {/* Username */}
             <FormField
               control={form.control}
               name="username"
@@ -110,7 +112,7 @@ export default function RegisterPage() {
                     <Input
                       placeholder="Username"
                       {...field}
-                      className="h-14 rounded-lg bg-gray-100"
+                      className="h-14 rounded-lg bg-[#f9f9f9]"
                     />
                   </FormControl>
                   <FormMessage />
@@ -118,6 +120,7 @@ export default function RegisterPage() {
               )}
             />
 
+            {/* Email */}
             <FormField
               control={form.control}
               name="email"
@@ -127,7 +130,7 @@ export default function RegisterPage() {
                     <Input
                       placeholder="Email"
                       {...field}
-                      className="h-14 rounded-lg bg-gray-100"
+                      className="h-14 rounded-lg bg-[#f9f9f9] border border-[#ededf3] focus:!border-black focus:!ring-0"
                     />
                   </FormControl>
                   <FormMessage />
@@ -135,6 +138,7 @@ export default function RegisterPage() {
               )}
             />
 
+            {/* Password */}
             <FormField
               control={form.control}
               name="password"
@@ -146,14 +150,18 @@ export default function RegisterPage() {
                         type={showPassword ? "text" : "password"}
                         placeholder="Password"
                         {...field}
-                        className="h-14 rounded-lg bg-gray-100"
+                        className="h-14 rounded-lg bg-[#f9f9f9]"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword((prev) => !prev)}
-                        className="absolute right-3 top-3 text-gray-500 hover:text-black"
+                        className="absolute right-3 top-3 bg-transparent outline-none focus:outline-none text-gray-500 hover:text-gray-700"
                       >
-                        {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        {showPassword ? (
+                          <FaEyeSlash size={16} />
+                        ) : (
+                          <FaEye size={16} />
+                        )}
                       </button>
                     </div>
                   </FormControl>
@@ -174,14 +182,18 @@ export default function RegisterPage() {
                         type={showConfirmPassword ? "text" : "password"}
                         placeholder="Confirm Password"
                         {...field}
-                        className="h-14 rounded-lg bg-gray-100"
+                        className="h-14 rounded-lg bg-[#f9f9f9]"
                       />
                       <button
                         type="button"
                         onClick={() => setShowConfirmPassword((prev) => !prev)}
-                        className="absolute right-3 top-3 text-gray-500 hover:text-black"
+                        className="absolute right-3 top-3 bg-transparent outline-none focus:outline-none text-gray-500 hover:text-gray-700"
                       >
-                        {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                        {showConfirmPassword ? (
+                          <FaEyeSlash size={16} />
+                        ) : (
+                          <FaEye size={16} />
+                        )}
                       </button>
                     </div>
                   </FormControl>
@@ -190,14 +202,21 @@ export default function RegisterPage() {
               )}
             />
 
+            <p className="text-center">
+              Already have an account?{" "}
+              <span className="text-[#4461f2] cursor-pointer">Login</span>
+            </p>
+
+            {/* Submit Button */}
             <Button
               type="submit"
               disabled={isPending}
-              className="w-full bg-blue-600 text-white h-14 rounded-4xl hover:bg-blue-600"
+              className="w-full bg-[#4461f2] text-white h-14 rounded-4xl hover:bg-[#4461f2] mt-4"
             >
               {isPending ? "Loading..." : "Create Account"}
             </Button>
 
+            {/* Divider */}
             <div className="flex items-center my-4">
               <div className="flex-1 h-px bg-gray-300"></div>
               <span className="px-3 text-gray-400 text-sm">
@@ -206,6 +225,7 @@ export default function RegisterPage() {
               <div className="flex-1 h-px bg-gray-300"></div>
             </div>
 
+            {/* Social Login */}
             <div className="grid grid-cols-4 gap-3">
               <button
                 type="button"
