@@ -45,7 +45,6 @@ export default function RegisterPage() {
     },
   });
 
-  // ✅ React Query Mutation
   const { mutate, isPending } = useMutation({
     mutationFn: registerAction,
     onSuccess: () => {
@@ -67,7 +66,6 @@ export default function RegisterPage() {
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {/* First Name */}
             <FormField
               control={form.control}
               name="firstName"
@@ -103,7 +101,6 @@ export default function RegisterPage() {
               )}
             />
 
-            {/* Username */}
             <FormField
               control={form.control}
               name="username"
@@ -121,7 +118,6 @@ export default function RegisterPage() {
               )}
             />
 
-            {/* Email */}
             <FormField
               control={form.control}
               name="email"
@@ -139,7 +135,6 @@ export default function RegisterPage() {
               )}
             />
 
-            {/* Password */}
             <FormField
               control={form.control}
               name="password"
@@ -195,7 +190,6 @@ export default function RegisterPage() {
               )}
             />
 
-            {/* Submit Button */}
             <Button
               type="submit"
               disabled={isPending}
@@ -204,7 +198,6 @@ export default function RegisterPage() {
               {isPending ? "Loading..." : "Create Account"}
             </Button>
 
-            {/* Divider */}
             <div className="flex items-center my-4">
               <div className="flex-1 h-px bg-gray-300"></div>
               <span className="px-3 text-gray-400 text-sm">
@@ -213,7 +206,6 @@ export default function RegisterPage() {
               <div className="flex-1 h-px bg-gray-300"></div>
             </div>
 
-            {/* Social Auth */}
             <div className="grid grid-cols-4 gap-3">
               <button
                 type="button"
