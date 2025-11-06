@@ -5,10 +5,18 @@ import type { RegisterSchemaType } from "@/lib/schemas/register.schema";
 
 export async function registerAction(values: RegisterSchemaType) {
   try {
+    // backend expects: rePassword
+    const body = {
+      ...values,
+      rePassword: values.confirmPassword,
+    };
+
+    delete (body as any).confirmPassword;
+
     const response = await fetch(`${process.env.API}/auth/signup`, {
       method: "POST",
       headers: JSON_HEADER,
-      body: JSON.stringify(values),
+      body: JSON.stringify(body),
     });
 
     const data = await response.json();
@@ -17,8 +25,10 @@ export async function registerAction(values: RegisterSchemaType) {
       throw new Error(data?.message || "Something went wrong");
     }
 
-    return { success: true, data };
-  } catch (err) {
-    return { success: false, error: "Server error, please try again" };
+    return data;
+  } catch (err: any) {
+    return {
+      error: err?.message || "Server error, please try again",
+    };
   }
 }
