@@ -5,7 +5,6 @@ import type { RegisterSchemaType } from "@/lib/schemas/register.schema";
 
 export async function registerAction(values: RegisterSchemaType) {
   try {
-    // backend expects: rePassword
     const body = {
       ...values,
       rePassword: values.confirmPassword,
