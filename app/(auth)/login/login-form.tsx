@@ -2,6 +2,7 @@
 
 import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
+import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
 
 export default function LoginForm() {
@@ -12,28 +13,32 @@ export default function LoginForm() {
     },
   });
 
-  const [loading, setLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  async function onSubmit(values: any) {
-    setLoading(true);
-    setErrorMsg("");
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (values: any) => {
+      setErrorMsg("");
 
-    const res = await signIn("credentials", {
-      email: values.email,
-      password: values.password,
-      redirect: false,
-    });
+      const res = await signIn("credentials", {
+        email: values.email,
+        password: values.password,
+        redirect: false,
+      });
 
-    console.log("LOGIN RESPONSE:", res);
+      if (res?.error) throw new Error("Invalid email or password");
 
-    if (res?.error) {
-      setErrorMsg("Invalid email or password");
-    } else {
+      return res;
+    },
+    onSuccess: () => {
       window.location.href = "/";
-    }
+    },
+    onError: (err: any) => {
+      setErrorMsg(err.message);
+    },
+  });
 
-    setLoading(false);
+  function onSubmit(values: any) {
+    mutate(values);
   }
 
   return (
@@ -55,11 +60,11 @@ export default function LoginForm() {
 
       <button
         type="submit"
-        disabled={loading}
-        className="w-full h-14 bg-blue-600 text-white rounded-xl"
+        disabled={isPending}
+        className="w-full h-14 bg-blue-600 text-white rounded-xl flex items-center justify-center"
       >
-        {loading ? (
-          <div className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5 mx-auto" />
+        {isPending ? (
+          <div className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5" />
         ) : (
           "Sign in"
         )}
