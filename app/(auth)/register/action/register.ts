@@ -5,17 +5,10 @@ import type { RegisterSchemaType } from "@/lib/schemas/register.schema";
 
 export async function registerAction(values: RegisterSchemaType) {
   try {
-    const body = {
-      ...values,
-      rePassword: values.confirmPassword,
-    };
-
-    delete (body as any).confirmPassword;
-
     const response = await fetch(`${process.env.API}/auth/signup`, {
       method: "POST",
       headers: JSON_HEADER,
-      body: JSON.stringify(body),
+      body: JSON.stringify(values),
     });
 
     const data = await response.json();

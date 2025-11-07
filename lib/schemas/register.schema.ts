@@ -15,13 +15,11 @@ export const registerSchema = z
     password: z
       .string()
       .min(6, { message: "Password must be at least 6 characters" }),
-    confirmPassword: z
-      .string()
-      .min(6, { message: "Please confirm your password" }),
+    rePassword: z.string().min(6, { message: "Please confirm your password" }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.password === data.rePassword, {
     message: "Passwords do not match",
-    path: ["confirmPassword"],
+    path: ["rePassword"],
   });
 
 export type RegisterSchemaType = z.infer<typeof registerSchema>;

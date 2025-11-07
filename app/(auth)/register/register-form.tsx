@@ -1,12 +1,14 @@
 "use client";
 
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { registerSchema } from "@/lib/schemas/register.schema";
 import { registerAction } from "./action/register";
-import { useMutation } from "@tanstack/react-query";
 
 export default function RegisterForm() {
+  const [isLoading, setIsLoading] = useState(false);
+
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -15,27 +17,25 @@ export default function RegisterForm() {
       username: "",
       email: "",
       password: "",
-      confirmPassword: "",
+      rePassword: "",
     },
   });
 
-  const { mutate, isPending } = useMutation({
-    mutationFn: async (values: any) => {
-      return await registerAction({
+  async function onSubmit(values: any) {
+    try {
+      setIsLoading(true);
+
+      const result = await registerAction({
         ...values,
-        phone: "01000000000",
+        phone: "01000000000", // ثابت فقط لل API
       });
-    },
-    onSuccess: (data) => {
-      console.log("REGISTER SUCCESS:", data);
-    },
-    onError: (err: any) => {
-      console.log("REGISTER ERROR:", err);
-    },
-  });
 
-  function onSubmit(values: any) {
-    mutate(values);
+      console.log("REGISTER SUCCESS:", result);
+    } catch (err) {
+      console.log("REGISTER ERROR:", err);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -98,23 +98,23 @@ export default function RegisterForm() {
       )}
 
       <input
-        {...form.register("confirmPassword")}
+        {...form.register("rePassword")}
         placeholder="Confirm Password"
         type="password"
         className="h-14 w-full border rounded-lg px-3"
       />
-      {form.formState.errors.confirmPassword && (
+      {form.formState.errors.rePassword && (
         <p className="text-red-500 text-sm">
-          {form.formState.errors.confirmPassword.message as string}
+          {form.formState.errors.rePassword.message as string}
         </p>
       )}
 
       <button
         type="submit"
-        disabled={isPending}
+        disabled={isLoading}
         className="w-full h-14 bg-blue-600 text-white rounded-xl flex items-center justify-center"
       >
-        {isPending ? (
+        {isLoading ? (
           <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
         ) : (
           "Create Account"
