@@ -1,14 +1,12 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import { registerSchema } from "@/lib/schemas/register.schema";
 import { registerAction } from "./action/register";
 
 export default function RegisterForm() {
-  const [isLoading, setIsLoading] = useState(false);
-
   const form = useForm({
     resolver: zodResolver(registerSchema),
     defaultValues: {
@@ -21,21 +19,24 @@ export default function RegisterForm() {
     },
   });
 
-  async function onSubmit(values: any) {
-    try {
-      setIsLoading(true);
-
-      const result = await registerAction({
+  const { mutate, isPending } = useMutation({
+    mutationFn: async (values: any) => {
+      return await registerAction({
         ...values,
-        phone: "01000000000", // ثابت فقط لل API
+        phone: "01000000000",
+        س,
       });
-
-      console.log("REGISTER SUCCESS:", result);
-    } catch (err) {
+    },
+    onSuccess: (data) => {
+      console.log("REGISTER SUCCESS:", data);
+    },
+    onError: (err: any) => {
       console.log("REGISTER ERROR:", err);
-    } finally {
-      setIsLoading(false);
-    }
+    },
+  });
+
+  function onSubmit(values: any) {
+    mutate(values);
   }
 
   return (
@@ -111,10 +112,10 @@ export default function RegisterForm() {
 
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={isPending}
         className="w-full h-14 bg-blue-600 text-white rounded-xl flex items-center justify-center"
       >
-        {isLoading ? (
+        {isPending ? (
           <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
         ) : (
           "Create Account"
