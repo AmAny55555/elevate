@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
-
+import AuthSocial from "../_components/auth-social";
 export default function LoginForm() {
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -69,6 +69,8 @@ export default function LoginForm() {
           "Sign in"
         )}
       </button>
+
+      <AuthSocial />
     </form>
   );
 }

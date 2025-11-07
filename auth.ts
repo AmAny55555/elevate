@@ -1,6 +1,9 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import Google from "next-auth/providers/google";
+import Github from "next-auth/providers/github";
+import Facebook from "next-auth/providers/facebook";
+import Twitter from "next-auth/providers/twitter";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   pages: {
@@ -47,22 +50,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
 
     Google({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    }),
+
+    Facebook({
+      clientId: process.env.FACEBOOK_ID!,
+      clientSecret: process.env.FACEBOOK_SECRET!,
+    }),
+
+    Twitter({
+      clientId: process.env.TWITTER_ID!,
+      clientSecret: process.env.TWITTER_SECRET!,
     }),
   ],
   callbacks: {
     jwt: ({ token, user }) => {
       if (user) {
         token.user = user.user;
-
         token.token = user.token;
       }
       return token;
     },
     session: ({ session, token }) => {
       session.user = token.user;
-
       session.token = token.token;
       return session;
     },

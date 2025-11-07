@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { registerSchema } from "@/lib/schemas/register.schema";
 import { registerAction } from "./action/register";
+import AuthSocial from "../_components/auth-social";
 
 export default function RegisterForm() {
   const form = useForm({
@@ -24,7 +25,6 @@ export default function RegisterForm() {
       return await registerAction({
         ...values,
         phone: "01000000000",
-        س,
       });
     },
     onSuccess: (data) => {
@@ -121,6 +121,8 @@ export default function RegisterForm() {
           "Create Account"
         )}
       </button>
+
+      <AuthSocial />
     </form>
   );
 }
