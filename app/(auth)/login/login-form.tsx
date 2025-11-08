@@ -4,7 +4,12 @@ import { useForm } from "react-hook-form";
 import { signIn } from "next-auth/react";
 import { useMutation } from "@tanstack/react-query";
 import { useState } from "react";
+
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import AuthSocial from "../_components/auth-social";
+import Link from "next/link";
+
 export default function LoginForm() {
   const { register, handleSubmit } = useForm({
     defaultValues: {
@@ -43,32 +48,30 @@ export default function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full">
-      <input
-        {...register("email")}
-        placeholder="Email"
-        className="h-14 w-full border rounded-lg px-3"
-      />
+      <Input placeholder="Email" {...register("email")} className="h-14" />
 
-      <input
-        {...register("password")}
+      <Input
         type="password"
         placeholder="Password"
-        className="h-14 w-full border rounded-lg px-3"
+        {...register("password")}
+        className="h-14"
       />
 
       {errorMsg && <p className="text-red-500 text-sm">{errorMsg}</p>}
 
-      <button
+      <div className="text-right">
+        <Link href="/forget-password" className="text-blue-600  font-thin">
+          Recover password ?
+        </Link>
+      </div>
+
+      <Button
         type="submit"
         disabled={isPending}
-        className="w-full h-14 bg-blue-600 text-white rounded-xl flex items-center justify-center"
+        className="w-full h-14 rounded-3xl shadow-main bg-blue-600 text-white hover:bg-blue-700"
       >
-        {isPending ? (
-          <div className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5" />
-        ) : (
-          "Sign in"
-        )}
-      </button>
+        {isPending ? "Signing In..." : "Sign in"}
+      </Button>
 
       <AuthSocial />
     </form>

@@ -3,12 +3,30 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import { registerSchema } from "@/lib/schemas/register.schema";
+
+import { useRouter } from "next/navigation";
+
+import {
+  registerSchema,
+  RegisterSchemaType,
+} from "@/lib/schemas/register.schema";
+
 import { registerAction } from "./action/register";
+
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from "@/components/ui/form";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import AuthSocial from "../_components/auth-social";
 
 export default function RegisterForm() {
-  const form = useForm({
+  const form = useForm<RegisterSchemaType>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
       firstName: "",
@@ -20,109 +38,129 @@ export default function RegisterForm() {
     },
   });
 
+  const router = useRouter();
   const { mutate, isPending } = useMutation({
-    mutationFn: async (values: any) => {
-      return await registerAction({
-        ...values,
-        phone: "01000000000",
-      });
+    mutationFn: async (values) => {
+      return await registerAction({ ...values, phone: "01000000000" });
     },
     onSuccess: (data) => {
       console.log("REGISTER SUCCESS:", data);
+      router.push("/login");
     },
     onError: (err: any) => {
       console.log("REGISTER ERROR:", err);
     },
   });
 
-  function onSubmit(values: any) {
-    mutate(values);
-  }
-
   return (
-    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 w-full">
-      <input
-        {...form.register("firstName")}
-        placeholder="First Name"
-        className="h-14 w-full border rounded-lg px-3"
-      />
-      {form.formState.errors.firstName && (
-        <p className="text-red-500 text-sm">
-          {form.formState.errors.firstName.message as string}
-        </p>
-      )}
-
-      <input
-        {...form.register("lastName")}
-        placeholder="Last Name"
-        className="h-14 w-full border rounded-lg px-3"
-      />
-      {form.formState.errors.lastName && (
-        <p className="text-red-500 text-sm">
-          {form.formState.errors.lastName.message as string}
-        </p>
-      )}
-
-      <input
-        {...form.register("username")}
-        placeholder="Username"
-        className="h-14 w-full border rounded-lg px-3"
-      />
-      {form.formState.errors.username && (
-        <p className="text-red-500 text-sm">
-          {form.formState.errors.username.message as string}
-        </p>
-      )}
-
-      <input
-        {...form.register("email")}
-        placeholder="Email"
-        type="email"
-        className="h-14 w-full border rounded-lg px-3"
-      />
-      {form.formState.errors.email && (
-        <p className="text-red-500 text-sm">
-          {form.formState.errors.email.message as string}
-        </p>
-      )}
-
-      <input
-        {...form.register("password")}
-        placeholder="Password"
-        type="password"
-        className="h-14 w-full border rounded-lg px-3"
-      />
-      {form.formState.errors.password && (
-        <p className="text-red-500 text-sm">
-          {form.formState.errors.password.message as string}
-        </p>
-      )}
-
-      <input
-        {...form.register("rePassword")}
-        placeholder="Confirm Password"
-        type="password"
-        className="h-14 w-full border rounded-lg px-3"
-      />
-      {form.formState.errors.rePassword && (
-        <p className="text-red-500 text-sm">
-          {form.formState.errors.rePassword.message as string}
-        </p>
-      )}
-
-      <button
-        type="submit"
-        disabled={isPending}
-        className="w-full h-14 bg-blue-600 text-white rounded-xl flex items-center justify-center"
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit((v) => mutate(v))}
+        className="space-y-4 w-full"
       >
-        {isPending ? (
-          <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
-        ) : (
-          "Create Account"
-        )}
-      </button>
+        <FormField
+          control={form.control}
+          name="firstName"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input className="h-14" placeholder="First Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-      <AuthSocial />
-    </form>
+        <FormField
+          control={form.control}
+          name="lastName"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input className="h-14" placeholder="Last Name" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="username"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input className="h-14" placeholder="Username" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="email"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  className="h-14"
+                  placeholder="Email"
+                  type="email"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="password"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  className="h-14"
+                  placeholder="Password"
+                  type="password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="rePassword"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input
+                  className="h-14"
+                  placeholder="Confirm Password"
+                  type="password"
+                  {...field}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <Button
+          type="submit"
+          className="w-full h-14 rounded-3xl bg-blue-600 text-white"
+          disabled={isPending}
+        >
+          {isPending ? "Creating account..." : "Create Account"}
+        </Button>
+
+        <AuthSocial />
+      </form>
+    </Form>
   );
 }
