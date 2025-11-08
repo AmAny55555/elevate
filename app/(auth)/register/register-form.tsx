@@ -3,7 +3,6 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-
 import { useRouter } from "next/navigation";
 
 import {
@@ -24,6 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import AuthSocial from "../_components/auth-social";
+import InputPassword from "../_components/input-password"; // <<< هنا
 
 export default function RegisterForm() {
   const form = useForm<RegisterSchemaType>({
@@ -115,18 +115,14 @@ export default function RegisterForm() {
           )}
         />
 
+        {/* ← هنا نستخدم الـ reusable */}
         <FormField
           control={form.control}
           name="password"
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input
-                  className="h-14"
-                  placeholder="Password"
-                  type="password"
-                  {...field}
-                />
+                <InputPassword placeholder="Password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -139,12 +135,7 @@ export default function RegisterForm() {
           render={({ field }) => (
             <FormItem>
               <FormControl>
-                <Input
-                  className="h-14"
-                  placeholder="Confirm Password"
-                  type="password"
-                  {...field}
-                />
+                <InputPassword placeholder="Confirm Password" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

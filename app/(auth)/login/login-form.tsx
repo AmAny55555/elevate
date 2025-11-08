@@ -9,6 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import AuthSocial from "../_components/auth-social";
 import Link from "next/link";
+import InputPassword from "../_components/input-password";
 
 export default function LoginForm() {
   const { register, handleSubmit } = useForm({
@@ -50,17 +51,12 @@ export default function LoginForm() {
     <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 w-full">
       <Input placeholder="Email" {...register("email")} className="h-14" />
 
-      <Input
-        type="password"
-        placeholder="Password"
-        {...register("password")}
-        className="h-14"
-      />
+      <InputPassword {...register("password")} placeholder="Password" />
 
       {errorMsg && <p className="text-red-500 text-sm">{errorMsg}</p>}
 
       <div className="text-right">
-        <Link href="/forget-password" className="text-blue-600  font-thin">
+        <Link href="/forget-password" className="text-blue-600 font-thin">
           Recover password ?
         </Link>
       </div>
