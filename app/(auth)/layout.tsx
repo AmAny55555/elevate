@@ -10,11 +10,11 @@ export default function AuthLayout({
     <div className="flex flex-col md:flex-row min-h-screen">
       <LeftSide />
 
-      <div className="hidden md:block w-[1px] bg-gray-300 shadow-gray-400"></div>
+      <div className="hidden md:block w-[60px] bg-gradient-to-r from-gray-200 via-gray-100 to-transparent"></div>
 
-      <div className="w-full md:w-1/2 flex flex-col gap-4 px-6 md:px-10 pt-6 pb-10">
+      <div className="w-full md:w-1/2 flex flex-col px-6 md:px-10 pt-6 pb-10">
         <AuthTabs />
-        <div className="mt-14">{children}</div>
+        <div className="mt-1">{children}</div>
       </div>
     </div>
   );

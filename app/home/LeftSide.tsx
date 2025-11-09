@@ -3,7 +3,7 @@ import Image from "next/image";
 
 export default function LeftSide() {
   return (
-    <div className="hidden md:flex bg-[#f0f4fc] w-full md:w-1/2 min-h-screen pl-10 pt-5 rounded-tr-2xl rounded-br-2xl">
+    <div className="hidden md:flex bg-[#f0f4fc] w-full md:w-1/2 min-h-screen pl-10 pt-5 rounded-tr-xl rounded-br-xl">
       <div>
         <p className="text-2xl font-bold leading-tight">
           Welcome to <span className="text-[#1e3a8d] block">Elevate</span>
